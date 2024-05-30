@@ -1,21 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Progress } from "./progress.entity";
-import { Repository } from "typeorm";
 import { ProgressDto } from "./progress.dto";
+import { ProgressRepository } from "./progress.repository";
 
 @Injectable()
 export class ProgressService {
-    constructor(
-        @InjectRepository(Progress)
-        private progressRepository: Repository<Progress>
-    ){}
+    constructor(private progressRepository: ProgressRepository){}
 
     findAll(): Promise<Progress[]> {
         try {
-            return this.progressRepository.createQueryBuilder('progress')
-                .orderBy('progress.attempt', 'ASC')
-                .getMany();   
+            var progress = this.progressRepository.findAllAndOrderByAttempt();
+
+            return progress;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -23,9 +19,9 @@ export class ProgressService {
 
     findLast(): Promise<Progress> {
         try {
-            return this.progressRepository.createQueryBuilder('progress')
-                .orderBy('progress.attempt', 'DESC')
-                .getOne();   
+            var progress = this.progressRepository.findLast();
+
+            return progress;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -33,9 +29,9 @@ export class ProgressService {
 
     findOne(id: string): Promise<Progress> {
         try {
-            return this.progressRepository.createQueryBuilder('progress')
-                .where('progress.id = :id', { id })
-                .getOne();
+            var progress = this.progressRepository.findById(id);
+
+            return progress;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -53,9 +49,7 @@ export class ProgressService {
 
     async update(progressDto: ProgressDto, id: string): Promise<Progress> {
         try {
-            var progress = await this.progressRepository.findOne({
-                where: { id }
-            });
+            var progress = await this.progressRepository.findById(id);
     
             if (!progress) throw new Error("Progress not found");
     
@@ -70,9 +64,7 @@ export class ProgressService {
 
     delete(id: string) {
         try {
-            var progress = this.progressRepository.findOne({
-                where: { id }
-            });
+            var progress = this.progressRepository.findById(id);
     
             if (!progress) throw new Error("Progress not found");
     

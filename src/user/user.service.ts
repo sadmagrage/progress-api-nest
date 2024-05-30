@@ -1,20 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
-import { Repository } from "typeorm";
 import { UserDto } from "./user.dto";
 import * as bcrypt from "bcryptjs";
+import { UserRepository } from "./user.repository";
 
 @Injectable()
 export class UserService {
-    constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>
-    ){}
+    constructor(private userRepository: UserRepository){}
 
     async findUserByUsername(username: string) : Promise<User | null> {
         try {
-            var user = await this.userRepository.findOneBy({ username });
+            var user = await this.userRepository.findByUsername(username);
 
             return user;
         } catch (error) {

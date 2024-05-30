@@ -8,10 +8,12 @@ import { UserService } from "src/user/user.service";
 import { User } from "src/user/user.entity";
 import { ConfigModule } from "@nestjs/config";
 import { AuthorizationMiddleware } from "src/authorization/authorization.middleware";
+import { ProgressRepository } from "./progress.repository";
+import { UserRepository } from "src/user/user.repository";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Progress, User]), ConfigModule.forRoot()],
-    providers: [ProgressService, AuthorizationService, UserService],
+    providers: [ProgressService, ProgressRepository, AuthorizationService, UserService, UserRepository],
     controllers: [ProgressController]
 })
 export class ProgressModule implements NestModule {
