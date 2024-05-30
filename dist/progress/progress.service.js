@@ -8,24 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProgressService = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
-const progress_entity_1 = require("./progress.entity");
-const typeorm_2 = require("typeorm");
+const progress_repository_1 = require("./progress.repository");
 let ProgressService = class ProgressService {
     constructor(progressRepository) {
         this.progressRepository = progressRepository;
     }
     findAll() {
         try {
-            return this.progressRepository.createQueryBuilder('progress')
-                .orderBy('progress.attempt', 'ASC')
-                .getMany();
+            var progress = this.progressRepository.findAllAndOrderByAttempt();
+            return progress;
         }
         catch (error) {
             throw new Error(error.message);
@@ -33,9 +27,8 @@ let ProgressService = class ProgressService {
     }
     findLast() {
         try {
-            return this.progressRepository.createQueryBuilder('progress')
-                .orderBy('progress.attempt', 'DESC')
-                .getOne();
+            var progress = this.progressRepository.findLast();
+            return progress;
         }
         catch (error) {
             throw new Error(error.message);
@@ -43,9 +36,8 @@ let ProgressService = class ProgressService {
     }
     findOne(id) {
         try {
-            return this.progressRepository.createQueryBuilder('progress')
-                .where('progress.id = :id', { id })
-                .getOne();
+            var progress = this.progressRepository.findById(id);
+            return progress;
         }
         catch (error) {
             throw new Error(error.message);
@@ -62,9 +54,7 @@ let ProgressService = class ProgressService {
     }
     async update(progressDto, id) {
         try {
-            var progress = await this.progressRepository.findOne({
-                where: { id }
-            });
+            var progress = await this.progressRepository.findById(id);
             if (!progress)
                 throw new Error("Progress not found");
             progress.attempt = progressDto.attempt;
@@ -77,9 +67,7 @@ let ProgressService = class ProgressService {
     }
     delete(id) {
         try {
-            var progress = this.progressRepository.findOne({
-                where: { id }
-            });
+            var progress = this.progressRepository.findById(id);
             if (!progress)
                 throw new Error("Progress not found");
             this.progressRepository.delete({ id });
@@ -92,7 +80,6 @@ let ProgressService = class ProgressService {
 exports.ProgressService = ProgressService;
 exports.ProgressService = ProgressService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(progress_entity_1.Progress)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [progress_repository_1.ProgressRepository])
 ], ProgressService);
 //# sourceMappingURL=progress.service.js.map

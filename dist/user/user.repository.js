@@ -9,24 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthorizationMiddleware = void 0;
+exports.UserRepository = void 0;
+const typeorm_1 = require("typeorm");
+const user_entity_1 = require("./user.entity");
 const common_1 = require("@nestjs/common");
-const authorization_service_1 = require("./authorization.service");
-let AuthorizationMiddleware = class AuthorizationMiddleware {
-    constructor(authorizationService) {
-        this.authorizationService = authorizationService;
+let UserRepository = class UserRepository extends typeorm_1.Repository {
+    constructor(dataSource) {
+        super(user_entity_1.User, dataSource.createEntityManager());
+        this.dataSource = dataSource;
     }
-    async use(req, res, next) {
-        const response = await this.authorizationService.authorize(req.header("Authorization"));
-        if (!response)
-            next();
-        else
-            res.status(response.status).json({ message: response.message });
+    async findByUsername(username) {
+        var user = this.findOne({ where: { username } });
+        return user;
     }
 };
-exports.AuthorizationMiddleware = AuthorizationMiddleware;
-exports.AuthorizationMiddleware = AuthorizationMiddleware = __decorate([
+exports.UserRepository = UserRepository;
+exports.UserRepository = UserRepository = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [authorization_service_1.AuthorizationService])
-], AuthorizationMiddleware);
-//# sourceMappingURL=authorization.middleware.js.map
+    __metadata("design:paramtypes", [typeorm_1.DataSource])
+], UserRepository);
+//# sourceMappingURL=user.repository.js.map

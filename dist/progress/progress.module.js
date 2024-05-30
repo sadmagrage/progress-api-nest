@@ -16,15 +16,21 @@ const authorization_service_1 = require("../authorization/authorization.service"
 const user_service_1 = require("../user/user.service");
 const user_entity_1 = require("../user/user.entity");
 const config_1 = require("@nestjs/config");
+const authorization_middleware_1 = require("../authorization/authorization.middleware");
+const progress_repository_1 = require("./progress.repository");
+const user_repository_1 = require("../user/user.repository");
 let ProgressModule = class ProgressModule {
     configure(consumer) {
+        consumer
+            .apply(authorization_middleware_1.AuthorizationMiddleware)
+            .forRoutes(progress_controller_1.ProgressController);
     }
 };
 exports.ProgressModule = ProgressModule;
 exports.ProgressModule = ProgressModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([progress_entity_1.Progress, user_entity_1.User]), config_1.ConfigModule.forRoot()],
-        providers: [progress_service_1.ProgressService, authorization_service_1.AuthorizationService, user_service_1.UserService],
+        providers: [progress_service_1.ProgressService, progress_repository_1.ProgressRepository, authorization_service_1.AuthorizationService, user_service_1.UserService, user_repository_1.UserRepository],
         controllers: [progress_controller_1.ProgressController]
     })
 ], ProgressModule);

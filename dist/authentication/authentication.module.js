@@ -15,6 +15,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
+const user_repository_1 = require("../user/user.repository");
 let AuthenticationModule = class AuthenticationModule {
 };
 exports.AuthenticationModule = AuthenticationModule;
@@ -29,7 +30,7 @@ exports.AuthenticationModule = AuthenticationModule = __decorate([
                 signOptions: { expiresIn: "15min" }
             })
         ],
-        providers: [authentication_service_1.AuthenticationService, user_service_1.UserService],
+        providers: [authentication_service_1.AuthenticationService, user_service_1.UserService, user_repository_1.UserRepository],
         controllers: [authentication_controller_1.AuthenticationController]
     })
 ], AuthenticationModule);

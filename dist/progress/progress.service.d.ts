@@ -1,9 +1,9 @@
 import { Progress } from "./progress.entity";
-import { Repository } from "typeorm";
 import { ProgressDto } from "./progress.dto";
+import { ProgressRepository } from "./progress.repository";
 export declare class ProgressService {
     private progressRepository;
-    constructor(progressRepository: Repository<Progress>);
+    constructor(progressRepository: ProgressRepository);
     findAll(): Promise<Progress[]>;
     findLast(): Promise<Progress>;
     findOne(id: string): Promise<Progress>;
