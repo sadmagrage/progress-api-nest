@@ -5,10 +5,10 @@ import { AuthorizationService } from "./authorization.service";
 @Injectable()
 export class AuthorizationMiddleware implements NestMiddleware {
 
-    constructor(private authozationService: AuthorizationService) {}
+    constructor(private authorizationService: AuthorizationService) {}
 
     async use(req: Request, res: Response, next: NextFunction) {
-        const response = await this.authozationService.authorize(req.header("Authorization"));
+        const response = await this.authorizationService.authorize(req.header("Authorization"));
 
         if (!response) next();
         else res.status(response.status).json({ message: response.message });
