@@ -16,26 +16,14 @@ exports.AuthenticationController = void 0;
 const common_1 = require("@nestjs/common");
 const login_dto_1 = require("../login/login.dto");
 const authentication_service_1 = require("./authentication.service");
-const user_service_1 = require("../user/user.service");
-const user_dto_1 = require("../user/user.dto");
 let AuthenticationController = class AuthenticationController {
-    constructor(authenticationService, userService) {
+    constructor(authenticationService) {
         this.authenticationService = authenticationService;
-        this.userService = userService;
     }
     async authentication(res, loginDto) {
         try {
             var token = await this.authenticationService.authenticate(loginDto);
             res.status(common_1.HttpStatus.OK).json(token);
-        }
-        catch (error) {
-            res.status(common_1.HttpStatus.CONFLICT).json({ message: error.message });
-        }
-    }
-    async createUser(res, userDto) {
-        try {
-            await this.userService.createUser(userDto);
-            res.status(common_1.HttpStatus.CREATED);
         }
         catch (error) {
             res.status(common_1.HttpStatus.CONFLICT).json({ message: error.message });
@@ -51,17 +39,8 @@ __decorate([
     __metadata("design:paramtypes", [Object, login_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "authentication", null);
-__decorate([
-    (0, common_1.Post)("register"),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, user_dto_1.UserDto]),
-    __metadata("design:returntype", Promise)
-], AuthenticationController.prototype, "createUser", null);
 exports.AuthenticationController = AuthenticationController = __decorate([
     (0, common_1.Controller)("auth"),
-    __metadata("design:paramtypes", [authentication_service_1.AuthenticationService,
-        user_service_1.UserService])
+    __metadata("design:paramtypes", [authentication_service_1.AuthenticationService])
 ], AuthenticationController);
 //# sourceMappingURL=authentication.controller.js.map

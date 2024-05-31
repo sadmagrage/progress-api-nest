@@ -19,7 +19,6 @@ let AuthenticationService = class AuthenticationService {
     constructor(userService, jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
-        this.secret = process.env.SECRET;
     }
     async authenticate(loginDto) {
         try {

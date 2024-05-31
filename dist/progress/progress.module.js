@@ -23,6 +23,7 @@ let ProgressModule = class ProgressModule {
     configure(consumer) {
         consumer
             .apply(authorization_middleware_1.AuthorizationMiddleware)
+            .exclude({ method: common_1.RequestMethod.GET, path: "progress" }, { method: common_1.RequestMethod.GET, path: "progress/last" }, { method: common_1.RequestMethod.GET, path: "progress/search" })
             .forRoutes(progress_controller_1.ProgressController);
     }
 };
