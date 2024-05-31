@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserRole } from "src/user/user.enum";
-import { UserService } from "src/user/user.service";
+import { UserRole } from "../user/user.enum";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class AuthorizationService {

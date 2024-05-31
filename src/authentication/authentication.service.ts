@@ -1,14 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { UserService } from "src/user/user.service";
+import { UserService } from "../user/user.service";
 import * as bcrypt from "bcryptjs";
-import { LoginDto } from "src/login/login.dto";
-import { TokenDto } from "src/token/token.dto";
+import { LoginDto } from "../login/login.dto";
+import { TokenDto } from "../token/token.dto";
 import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthenticationService {
-    private secret: string = process.env.SECRET;
-
     constructor(
         private userService: UserService,
         private jwtService: JwtService
